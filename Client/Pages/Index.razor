@@ -1,0 +1,33 @@
+﻿@page "/"
+@using Syncfusion.Blazor.FileManager
+
+
+<SfFileManager TValue="FileManagerDirectoryContent" View="ViewType.Details">
+    <FileManagerAjaxSettings Url="/api/FileManager/FileOperations"
+                             DownloadUrl="/api/FileManager/Download"
+                             UploadUrl="/api/FileManager/Upload"
+                             GetImageUrl="/api/FileManager/GetImage">
+    </FileManagerAjaxSettings>
+    <FileManagerToolbarSettings Items="@Items"></FileManagerToolbarSettings>
+    <FileManagerEvents TValue="FileManagerDirectoryContent"
+                       ToolbarCreated="ToolbarCreated"
+                       ToolbarItemClicked="ToolbarItemClicked"></FileManagerEvents>
+</SfFileManager>
+
+@code{
+
+    public string[] Items { get; set; } = new string[] { "NewFolder", "Refresh", "Undo" };
+
+    public void ToolbarCreated(ToolbarCreateEventArgs args)
+    {
+        args.Items.Where(x => x.Text == "Undo").First().PrefixIcon = "oi oi-action-undo";
+    }
+
+    public void ToolbarItemClicked(ToolbarClickEventArgs<FileManagerDirectoryContent> args)
+    {
+        if(args.Item.Text == "Undo")
+        {
+            Console.WriteLine("Undo clicked");
+        }
+    }
+}
